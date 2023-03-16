@@ -7,14 +7,15 @@ public class Movement : MonoBehaviour
     public float speed { get; private set; }
     private float worldLeftEdge;
     public Transform endPos;
-    private bool spawnedNextPrefab;
+    public bool spawnedNextPrefab;
     private Spawner spawner;
+
 
     private void Start()
     {
         spawner = GetComponentInParent<Spawner>();
         worldLeftEdge = spawner.leftEdgeTransform.position.x;
-        spawnedNextPrefab = false;
+        //SetSpawnedNext(false);
         SetSpeed(spawner.prefabSpeed);
     }
 
@@ -33,17 +34,20 @@ public class Movement : MonoBehaviour
         }
         if(endPos != null)
         {
-            if (endPos.position.x > spawner.transform.position.x && spawnedNextPrefab == false)
+            if (endPos.position.x > spawner.transform.position.x && !spawnedNextPrefab)
             {
                 spawner.Spawn();
-                spawnedNextPrefab = true;
+                SetSpawnedNext(true);
             }
         }
-
     }
     public void SetSpeed(float speedValue)
     {
         speed = speedValue;
+    }
+    public void SetSpawnedNext(bool value)
+    {
+        spawnedNextPrefab = value;
     }
     
 }

@@ -30,10 +30,12 @@ public class Spawner : MonoBehaviour
     {
         GameObject newObj = Instantiate(prefab, transform.position, Quaternion.identity);
 
+        newObj.GetComponent<Movement>().SetSpawnedNext(false);
         newObj.transform.parent = this.transform;
         newObj.transform.position = transform.position;
 
         //newObj.GetComponent<Movement>().SetSpeed(prefabSpeed);
+
 
         if (changesHeight)
         {
