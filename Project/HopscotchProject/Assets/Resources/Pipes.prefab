@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2255511986713719157}
   m_Layer: 0
   m_Name: Bottom
-  m_TagString: Untagged
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,6 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 202457136126807864}
   - component: {fileID: 3853381423163569329}
+  - component: {fileID: 2099621718229158996}
   m_Layer: 0
   m_Name: Pipes
   m_TagString: Untagged
@@ -162,6 +163,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endPos: {fileID: 0}
+  spawnedNextPrefab: 0
+--- !u!114 &2099621718229158996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3213866604686252124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d0e76d64a11b3644959ab6b1bade52b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topPipeTransform: {fileID: 1919822132730854113}
 --- !u!1 &6241770277689460895
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +189,7 @@ GameObject:
   - component: {fileID: 4811606038327190130}
   m_Layer: 0
   m_Name: MiddleTrigger
-  m_TagString: Untagged
+  m_TagString: Check
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -187,7 +202,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6241770277689460895}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.889, z: 0.122}
+  m_LocalPosition: {x: 0, y: 0.889, z: 0.193}
   m_LocalScale: {x: 0.62475854, y: 1.0534, z: 0.18816}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -205,8 +220,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.3664964, z: 1}
-  m_Center: {x: 0, y: 0.18324855, z: 0}
+  m_Size: {x: 1, y: 1.5104578, z: 3.2894807}
+  m_Center: {x: 0, y: 0.25522923, z: -1.1447412}
 --- !u!1 &8483989142236573143
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +237,7 @@ GameObject:
   - component: {fileID: 2432213036636364836}
   m_Layer: 0
   m_Name: Top
-  m_TagString: Untagged
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,7 +250,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8483989142236573143}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: 2.17, z: 0}
+  m_LocalPosition: {x: 0, y: 2.32, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

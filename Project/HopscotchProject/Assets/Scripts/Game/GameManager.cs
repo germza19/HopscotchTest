@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int score;
+    public bool isGameOver;
+    [SerializeField] CanvasManager canvasManager;
+
+    private void Start()
     {
-        
+        isGameOver = false;
+    }
+    public void GameOver()
+    {
+        Debug.Log("GameOver");
+        isGameOver = true;
+        canvasManager.SetGameOverCanvasGroup(true);
+        Time.timeScale = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void IncreaseScore()
     {
-        
+        score++;
+        canvasManager.UpdateScoreUGUI(score);
     }
 }

@@ -31,15 +31,19 @@ public class Spawner : MonoBehaviour
         GameObject newObj = Instantiate(prefab, transform.position, Quaternion.identity);
 
         newObj.GetComponent<Movement>().SetSpawnedNext(false);
+        Pipes pipe = newObj.GetComponent<Pipes>();
         newObj.transform.parent = this.transform;
         newObj.transform.position = transform.position;
 
         //newObj.GetComponent<Movement>().SetSpeed(prefabSpeed);
-
-
         if (changesHeight)
         {
             newObj.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
+        }
+        if(pipe != null)
+        {
+            float rand = Random.Range(0.85f, 1f);
+            pipe.SetTopPipeHeight(rand);
         }
     }
 }
