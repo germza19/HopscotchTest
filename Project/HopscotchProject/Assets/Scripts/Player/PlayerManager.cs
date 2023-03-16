@@ -14,6 +14,7 @@ public class PlayerManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         animator = GetComponent<Animator>();
 
+        animator.applyRootMotion = true;
         animator.SetBool("Die", false);
     }
     private void OnTriggerEnter(Collider other)
@@ -25,6 +26,7 @@ public class PlayerManager : MonoBehaviour
                 gameManager.GameOver();
                 cam.Follow = null;
                 cam.LookAt = null;
+                animator.applyRootMotion = false;
                 animator.SetBool("Die", true);
             }
         }
