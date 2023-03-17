@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    GameManager gameManager;
-    Animator animator;
+    public GameManager gameManager { get; private set; }
+    public Animator animator { get; private set; }
     [SerializeField] CinemachineVirtualCamera cam;
 
     private void Awake()

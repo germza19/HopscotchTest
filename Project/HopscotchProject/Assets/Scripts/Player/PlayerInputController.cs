@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour
 {
+    //PlayerManager playerManager;
     private Vector3 direction;
 
     public float gravity;
@@ -15,23 +16,29 @@ public class PlayerInputController : MonoBehaviour
 
     public void Awake()
     {
+        //playerManager = GetComponent<PlayerManager>();
         canLiftInput = true;
     }
 
     private void Update()
     {
         SetLiftInputTimer();
+        PlayerInput();
+    }
 
+    public void PlayerInput()
+    {
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && canLiftInput)
         {
             direction = Vector3.up * strength;
             SetLiftInput(false);
         }
-        if(Input.touchCount > 0)
+
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
-            if(touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began)
             {
                 direction = Vector3.up * strength;
                 SetLiftInput(false);
