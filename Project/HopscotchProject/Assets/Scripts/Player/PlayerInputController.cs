@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInputController : MonoBehaviour
 {
@@ -28,7 +29,10 @@ public class PlayerInputController : MonoBehaviour
 
     public void PlayerInput()
     {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && canLiftInput)
+        
+        if ((Input.GetKeyDown(KeyCode.Space) ||
+            (Input.GetMouseButtonDown(0)) && !CheckIfMouseIsOverUI() )
+            && canLiftInput)
         {
             direction = Vector3.up * strength;
             SetLiftInput(false);
@@ -64,6 +68,20 @@ public class PlayerInputController : MonoBehaviour
                 SetLiftInput(true);
                 liftInputTime = 0.0f;
             }
+        }
+    }
+
+    private bool CheckIfMouseIsOverUI()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            //Debug.Log("Its over UI elements");
+            return true;
+        }
+        else
+        {
+            //Debug.Log("Its NOT over UI elements");
+            return false;
         }
     }
 }

@@ -11,6 +11,10 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] CanvasGroup gameOverPanelCG;
     [SerializeField] CanvasGroup gamePausedPanelCG;
 
+    [SerializeField] TextMeshProUGUI countDownTimerText;
+    [SerializeField] GameObject pauseTextGO;
+    [field: SerializeField] public GameObject countDownTimerTextGO { get; private set; }
+
     private GameManager gameManager;
 
     public void Awake()
@@ -18,11 +22,20 @@ public class CanvasManager : MonoBehaviour
         SetGameOverCanvasGroup(false);
         SetGamePausedCanvasGroup(false);
         gameManager = FindObjectOfType<GameManager>();
+
+        pauseTextGO.SetActive(true);
+        countDownTimerTextGO.SetActive(false);
     }
 
     public void UpdateScoreUGUI(int score)
     {
         scoreTMP.text = score.ToString();
+    }
+    public void UpdateResumeTimer(float timer, float totalTime)
+    {
+
+        int timerInt = (int)(totalTime - timer);
+        countDownTimerText.text = timerInt.ToString();
     }
 
     public void SetGameOverCanvasGroup(bool value)
@@ -49,6 +62,8 @@ public class CanvasManager : MonoBehaviour
 
     public void OnPauseButton()
     {
+        pauseTextGO.SetActive(true);
+        countDownTimerTextGO.SetActive(false);
         gameManager.PauseGame();
     }
     public void OnHighScoreButton()
@@ -58,6 +73,8 @@ public class CanvasManager : MonoBehaviour
 
     public void OnResumeButton()
     {
+        pauseTextGO.SetActive(false);
+        countDownTimerTextGO.SetActive(true);
         gameManager.ResumeGame(); // resume after 3 seconds
     }
 

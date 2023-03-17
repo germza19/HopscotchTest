@@ -10,16 +10,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] CanvasManager canvasManager;
     private PlayerManager playerManager;
 
+    [SerializeField] float resumeTime;
+    private float waitCounter;
+
     public void Awake()
     {
         playerManager = FindObjectOfType<PlayerManager>();
     }
-
+    public void Update()
+    {
+        if(canvasManager.countDownTimerTextGO.activeSelf)
+        {
+            canvasManager.UpdateResumeTimer(waitCounter, resumeTime);
+        }
+    }
     private void Start()
     {
         Time.timeScale = 1;
         isGameOver = false;
         isGamePaused = false;
+
+        waitCounter = 0;
     }
     public void GameOver()
     {
@@ -45,9 +56,24 @@ public class GameManager : MonoBehaviour
     }
     public void ResumeGame()
     {
+        StartCoroutine(WaitToResume());
+    }
+
+    IEnumerator WaitToResume()
+    {
+        waitCounter = 0;
+        while (waitCounter < resumeTime)
+        {
+            waitCounter += Time.unscaledDeltaTime;
+            
+            yield return null;
+        }
+
         isGamePaused = false;
         playerManager.animator.SetBool("Paused", false);
         canvasManager.SetGamePausedCanvasGroup(false);
         Time.timeScale = 1;
+        waitCounter = 0;
+
     }
 }
