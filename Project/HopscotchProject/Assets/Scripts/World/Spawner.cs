@@ -42,7 +42,7 @@ public class Spawner : MonoBehaviour
         }
         if(pipe != null)
         {
-            float rand = Random.Range(0.85f, 1f);
+            float rand = Random.Range(0.80f, 0.95f);
             pipe.SetTopPipeHeight(rand);
         }
     }

@@ -4,25 +4,20 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public int score { get; private set; }
+    [SerializeField] private CanvasManager canvasManager;
+    private PlayerManager playerManager;
     public bool isGameOver { get; private set; }
     public bool isGamePaused { get; private set; }
-    [SerializeField] CanvasManager canvasManager;
-    private PlayerManager playerManager;
 
     [SerializeField] float resumeTime;
     private float waitCounter;
 
-    public void Awake()
+    public int score { get; private set; }
+    private HighscoreManager highscoreManager;
+    private void Awake()
     {
         playerManager = FindObjectOfType<PlayerManager>();
-    }
-    public void Update()
-    {
-        if(canvasManager.countDownTimerTextGO.activeSelf)
-        {
-            canvasManager.UpdateResumeTimer(waitCounter, resumeTime);
-        }
+        highscoreManager = GetComponent<HighscoreManager>();
     }
     private void Start()
     {
@@ -31,11 +26,21 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
 
         waitCounter = 0;
+        canvasManager.UpdateHighscoreUGUI(highscoreManager.highscore);
+    }
+    public void Update()
+    {
+        if(canvasManager.countDownTimerTextGO.activeSelf)
+        {
+            canvasManager.UpdateResumeTimer(waitCounter, resumeTime);
+        }
     }
     public void GameOver()
     {
         Debug.Log("GameOver");
         isGameOver = true;
+        highscoreManager.SetHighscoreIfGreater(score);
+        canvasManager.UpdateHighscoreUGUI(highscoreManager.highscore);
         canvasManager.SetGameOverCanvasGroup(true);
         Time.timeScale = 0;
     }

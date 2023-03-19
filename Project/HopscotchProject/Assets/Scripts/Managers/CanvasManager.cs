@@ -7,9 +7,13 @@ using UnityEngine.SceneManagement;
 public class CanvasManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreTMP;
+    [SerializeField] TextMeshProUGUI highscoreTMP;
 
     [SerializeField] CanvasGroup gameOverPanelCG;
     [SerializeField] CanvasGroup gamePausedPanelCG;
+    [SerializeField] CanvasGroup pauseMenuButtonsCG;
+
+    [SerializeField] CanvasGroup HighscoresListPanelCG;
 
     [SerializeField] TextMeshProUGUI countDownTimerText;
     [SerializeField] GameObject pauseTextGO;
@@ -30,6 +34,10 @@ public class CanvasManager : MonoBehaviour
     public void UpdateScoreUGUI(int score)
     {
         scoreTMP.text = score.ToString();
+    }
+    public void UpdateHighscoreUGUI(int score)
+    {
+        highscoreTMP.text = score.ToString();
     }
     public void UpdateResumeTimer(float timer, float totalTime)
     {
@@ -62,6 +70,7 @@ public class CanvasManager : MonoBehaviour
 
     public void OnPauseButton()
     {
+        SetCanvasGroupVisible(pauseMenuButtonsCG, true);
         pauseTextGO.SetActive(true);
         countDownTimerTextGO.SetActive(false);
         gameManager.PauseGame();
@@ -69,11 +78,15 @@ public class CanvasManager : MonoBehaviour
     public void OnHighScoreButton()
     {
         //TODO : pause and show higscores
+        pauseTextGO.SetActive(true);
+        countDownTimerTextGO.SetActive(false);
+        gameManager.PauseGame();
     }
 
     public void OnResumeButton()
     {
         pauseTextGO.SetActive(false);
+        SetCanvasGroupVisible(pauseMenuButtonsCG, false);
         countDownTimerTextGO.SetActive(true);
         gameManager.ResumeGame(); // resume after 3 seconds
     }
