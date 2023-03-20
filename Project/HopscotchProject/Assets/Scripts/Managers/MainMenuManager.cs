@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    [SerializeField] private GameObject exitButton;
     public void OnExitButton()
     {
         Application.Quit();
@@ -13,8 +14,20 @@ public class MainMenuManager : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(1);
     }
-    public void OnHighScoreButton()
+
+    public void HideOrShowButton(bool value)
     {
-        //TODO : pause and show higscores
+        exitButton.SetActive(value);
+    }
+    private void Awake()
+    {
+        HideOrShowButton(false);
+    }
+
+    private void Start()
+    {
+#if UNITY_STANDALONE_WIN
+        HideOrShowButton(true);
+#endif
     }
 }
