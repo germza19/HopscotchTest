@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private float waitCounter;
 
     public int score { get; private set; }
-    private HighscoreManager highscoreManager;
+    public HighscoreManager highscoreManager { get; private set; }
     private void Awake()
     {
         playerManager = FindObjectOfType<PlayerManager>();
@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
 
         waitCounter = 0;
-        canvasManager.UpdateHighscoreUGUI(highscoreManager.highscore);
     }
     public void Update()
     {
@@ -39,8 +38,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameOver");
         isGameOver = true;
-        highscoreManager.SetHighscoreIfGreater(score);
-        canvasManager.UpdateHighscoreUGUI(highscoreManager.highscore);
+        highscoreManager.AddHighscoreIfPossible(new HighscoreElement(score));
+        canvasManager.UpdateHighscores(highscoreManager.highscoreList);
+        canvasManager.ShowHighscoresList(false);
         canvasManager.SetGameOverCanvasGroup(true);
         Time.timeScale = 0;
     }

@@ -4,28 +4,47 @@ using UnityEngine;
 
 public class HighscoreManager : MonoBehaviour
 {
-    public int highscore { get; private set; }
+    public List<HighscoreElement> highscoreList = new List<HighscoreElement>();
+    [SerializeField] int maxCount = 5;
+    [SerializeField] string filename;
 
     private void Awake()
     {
-        SetLatestHighscore();
+        LoadHighscores();
     }
 
-    private void SetLatestHighscore()
+    private void LoadHighscores()
     {
-        highscore = PlayerPrefs.GetInt("Highscore", 0);
-    }
+        highscoreList = FileHandler.ReadListFromJSON<HighscoreElement>(filename);
 
-    private void SaveHighscore(int score)
-    {
-        PlayerPrefs.SetInt("Highscore", score);
-    }
-    public void SetHighscoreIfGreater(int newScore)
-    {
-        if(newScore > highscore)
+        while(highscoreList.Count > maxCount)
         {
-            highscore = newScore;
-            SaveHighscore(newScore);
+            highscoreList.RemoveAt(maxCount);
+        }
+    }
+
+    public void SaveHighscores()
+    {
+        FileHandler.SaveToJSON<HighscoreElement> (highscoreList, filename);
+    }
+
+    public void AddHighscoreIfPossible(HighscoreElement element)
+    {
+        for (int i = 0; i < maxCount; i++)
+        {
+            if(i >= highscoreList.Count || element.points > highscoreList[i].points)
+            {
+                highscoreList.Insert(i,element);
+
+                while (highscoreList.Count > maxCount)
+                {
+                    highscoreList.RemoveAt(maxCount);
+                }
+
+                SaveHighscores();
+
+                break;
+            }
         }
     }
 }

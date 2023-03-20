@@ -13,7 +13,11 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] CanvasGroup gamePausedPanelCG;
     [SerializeField] CanvasGroup pauseMenuButtonsCG;
 
-    [SerializeField] CanvasGroup HighscoresListPanelCG;
+    //[SerializeField] CanvasGroup highscoresListPanelCG;
+    [SerializeField] Transform highscoresParent;
+    [SerializeField] GameObject highscoreUIPrefab;
+
+    List<GameObject> highscoresUIElements = new List<GameObject>();
 
     [SerializeField] TextMeshProUGUI countDownTimerText;
     [SerializeField] GameObject pauseTextGO;
@@ -21,7 +25,7 @@ public class CanvasManager : MonoBehaviour
 
     private GameManager gameManager;
 
-    public void Awake()
+    private void Awake()
     {
         SetGameOverCanvasGroup(false);
         SetGamePausedCanvasGroup(false);
@@ -31,13 +35,37 @@ public class CanvasManager : MonoBehaviour
         countDownTimerTextGO.SetActive(false);
     }
 
+    private void Start()
+    {
+        UpdateHighscores(gameManager.highscoreManager.highscoreList);
+        ShowHighscoresList(false);
+    }
+
     public void UpdateScoreUGUI(int score)
     {
         scoreTMP.text = score.ToString();
     }
-    public void UpdateHighscoreUGUI(int score)
+
+    public void ShowHighscoresList(bool value)
     {
-        highscoreTMP.text = score.ToString();
+        for (int i = 0; i < highscoresUIElements.Count; i++)
+        {
+            if (i == 0)
+            {
+                highscoresUIElements[i].GetComponent<CanvasGroup>().alpha = 1f;
+            }
+            else
+            {
+                if(value)
+                {
+                    highscoresUIElements[i].GetComponent<CanvasGroup>().alpha = 0.6f;
+                }
+                else
+                {
+                    highscoresUIElements[i].GetComponent<CanvasGroup>().alpha = 0f;
+                }                
+            }
+        }
     }
     public void UpdateResumeTimer(float timer, float totalTime)
     {
@@ -70,23 +98,55 @@ public class CanvasManager : MonoBehaviour
 
     public void OnPauseButton()
     {
-        SetCanvasGroupVisible(pauseMenuButtonsCG, true);
-        pauseTextGO.SetActive(true);
-        countDownTimerTextGO.SetActive(false);
-        gameManager.PauseGame();
+        if(!gameManager.isGameOver)
+        {
+            ShowHighscoresList(false);
+            SetCanvasGroupVisible(pauseMenuButtonsCG, true);
+            pauseTextGO.SetActive(true);
+            countDownTimerTextGO.SetActive(false);
+            gameManager.PauseGame();
+        }
+
     }
     public void OnHighScoreButton()
     {
-        //TODO : pause and show higscores
-        pauseTextGO.SetActive(true);
-        countDownTimerTextGO.SetActive(false);
-        gameManager.PauseGame();
+        UpdateHighscores(gameManager.highscoreManager.highscoreList);
+        ShowHighscoresList(true);
+        if (!gameManager.isGameOver)
+        {
+            pauseTextGO.SetActive(true);
+            countDownTimerTextGO.SetActive(false);
+            gameManager.PauseGame();
+        }
+    }
+
+    public void UpdateHighscores(List<HighscoreElement> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            HighscoreElement element = list[i];
+
+            if(element.points > 0)
+            {
+                if(i >= highscoresUIElements.Count)
+                {
+                    var inst = Instantiate(highscoreUIPrefab, Vector3.zero, Quaternion.identity);
+                    inst.transform.SetParent(highscoresParent.transform,false);
+
+                    highscoresUIElements.Add(inst);
+                }
+
+                var text = highscoresUIElements[i].GetComponentInChildren<TextMeshProUGUI>();
+                text.text = element.points.ToString();
+            }
+        }
     }
 
     public void OnResumeButton()
     {
         pauseTextGO.SetActive(false);
         SetCanvasGroupVisible(pauseMenuButtonsCG, false);
+        ShowHighscoresList(false);
         countDownTimerTextGO.SetActive(true);
         gameManager.ResumeGame(); // resume after 3 seconds
     }
